@@ -1,0 +1,15 @@
+Sub zzz_Font_UPPERCASE()
+'
+' This is for changing all of the selected items to UPPERCASE
+'
+
+
+    Dim rng As Range
+    For Each rng In Selection.Cells
+        If rng.HasFormula = False Then
+            'Use this line for UpperCase text; change UCase to LCase for LowerCase text.
+            rng.Value = UCase(rng.Value)
+        End If
+    Next rng
+
+End Sub
