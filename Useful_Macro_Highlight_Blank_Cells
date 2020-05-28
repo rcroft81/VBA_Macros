@@ -1,0 +1,16 @@
+Sub zzz_Highlight_Blank_Cells()
+'
+'
+'
+' This macro will highlight empty/blank cells in a different color
+'-----------------------------------------------------------------
+'-----------------------------------------------------------------
+
+Dim Dataset As Range
+Set Dataset = Selection
+Dataset.SpecialCells(xlCellTypeBlanks).Interior.Color = vbYellow
+
+'-----------------------------------------------------------------
+'
+
+End Sub
