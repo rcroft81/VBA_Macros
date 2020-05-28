@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
+	<title>Converter</title>
+	<script type="text/javascript" src="HW11b.js"></script>
+</head>
+
+<body>
+  <!--Roger Croft ====== CS 1030 ====== March 23, 2009 ======= HW11a-->
+
+  <h2>Enter a Value in the Input box and click a button to Convert the Value:</h2>
+
+  	<p>Input your value: <input type="text" value="27" id="conVersion" /></p>
+  	
+	  <p><input type="button" value="Convert inches to centimeters" id="inchCent" onclick="Inches()" /></p>
+  	<p><input type="button" value="Convert centimeters to inches" id="centInch" onclick="Centimeters()" /></p>
+  	<p><input type="button" value="Convert feet to meters" id="feetMeter" onclick="Feet()"/></p>
+  	<p><input type="button" value="Convert meters to feet" id="meterFeet" onclick="Meter()"/></p>
+  	<p><input type="button" value="Convert miles to kilometers" id="milesKilo" onclick="Miles()"/></p>
+  	<p><input type="button" value="Convert kilometers to miles" id="kiloMiles" onclick="Kilometers()"/></p>
+  
+  <p>Your Conversion is:<input type="text" size="55" value="15 inches is equal to 38.1 centimeters." id="conversionExplain"/></p>  
+
+</body>
+
+</html>
