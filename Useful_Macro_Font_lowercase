@@ -1,0 +1,14 @@
+Sub zzz_Font_lowercase()
+'
+' This is for changing all of the selected items to lowercase
+'
+
+    Dim rng As Range
+    For Each rng In Selection.Cells
+        If rng.HasFormula = False Then
+'Use this line for UpperCase text; change UCase to LCase for LowerCase text.
+            rng.Value = LCase(rng.Value)
+        End If
+    Next rng
+
+End Sub
