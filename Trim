@@ -1,0 +1,8 @@
+Sub Istation_TrimCol()
+'---This Macro is used in the Istation_Report_Setup Macro------------------
+'---Trim All Columns-------------------------------------------------------
+'---DO NOT DELETE----------------------------------------------------------
+    Dim r As Range
+    Set r = Intersect(Range("A:AG").EntireColumn, ActiveSheet.UsedRange)
+    r.Value = Evaluate("IF(ROW(" & r.Address & "),IF(" & r.Address & "<>"""",TRIM(" & r.Address & "),""""))")
+End Sub
