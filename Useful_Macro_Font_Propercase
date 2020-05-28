@@ -1,0 +1,18 @@
+Sub zzz_Font_Proper_Case()
+'
+'This is for changing all of the selected items to Proper Case
+'
+
+
+Dim x As Range
+Dim Workx As Range
+On Error Resume Next
+xTitleId = "KutoolsforExcel"
+Set Workx = Application.Selection
+'Set Workx = Application.InputBox("Range", xTitleId, Workx.Address, Type:=8)
+For Each x In Workx
+x.Value = Application.Proper(x.Value)
+Next
+
+
+End Sub
