@@ -1,0 +1,47 @@
+Sub Delete_TIDE_Ready()
+    For Each Sheet In ActiveWorkbook.Worksheets
+        If Sheet.Name = "TIDE_Ready" Then
+        Application.DisplayAlerts = False
+        Worksheets("TIDE_Ready").Delete
+        Application.DisplayAlerts = True
+        End If
+    Next Sheet
+End Sub
+Sub Delete_Istation_Ready()
+    For Each Sheet In ActiveWorkbook.Worksheets
+        If Sheet.Name = "Istation_Ready" Then
+        Application.DisplayAlerts = False
+        Worksheets("Istation_Ready").Delete
+        Application.DisplayAlerts = True
+        End If
+    Next Sheet
+End Sub
+Sub Delete_Think_Central_Ready()
+    For Each Sheet In ActiveWorkbook.Worksheets
+        If Sheet.Name = "Think_Central_Ready" Then
+        Application.DisplayAlerts = False
+        Worksheets("Think_Central_Ready").Delete
+        Application.DisplayAlerts = True
+        End If
+    Next Sheet
+End Sub
+'---Delete all the (2) sheets created in the Istation Macro process--------
+Sub Delete_IstationSheets1()
+    For Each Sheet In ActiveWorkbook.Worksheets
+        If Sheet.Name = "6th Grade Teachers (2)" Then
+        Application.DisplayAlerts = False
+        Worksheets("6th Grade Teachers (2)").Delete
+        Application.DisplayAlerts = True
+        End If
+    Next Sheet
+End Sub
+Sub Delete_IstationSheets2()
+    For Each Sheet In ActiveWorkbook.Worksheets
+        If Sheet.Name = "Faculty Emails (2)" Then
+        Application.DisplayAlerts = False
+        Worksheets("Faculty Emails (2)").Delete
+        Application.DisplayAlerts = True
+        End If
+    Next Sheet
+End Sub
+'---End Delete all (2) sheets for Istation macro process-------------------
