@@ -1,0 +1,17 @@
+Sub zzz_Highlight_Duplicate_Values()
+'
+' This macro will check each cell of your
+' selection and highlight the duplicate values.
+' You can also change the color from the code.
+'
+
+    Dim myRange As Range
+    Dim myCell As Range
+    Set myRange = Selection
+    For Each myCell In myRange
+    If WorksheetFunction.CountIf(myRange, myCell.Value) > 1 Then
+    myCell.Interior.ColorIndex = 36
+    End If
+    Next myCell
+
+End Sub
