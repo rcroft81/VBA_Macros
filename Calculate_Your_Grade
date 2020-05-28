@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">  
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>My Grade</title>
+  <script type="text/javascript">
+    function yourGrades()
+    // Assumes: Calculates the Overall Percentage Grade for the individual
+    // Results: gives the overall percentage grade for the values entered
+    {
+	hWork = document.getElementById('homeWork').value;
+	hWork = parseFloat(hWork);
+	
+	hwOrk = document.getElementById('homewOrk').value;
+	hwOrk = parseFloat(hwOrk);
+
+	hwoRk = document.getElementById('homewoRk').value;
+	hwoRk = parseFloat(hwoRk);
+
+	hworK = document.getElementById('homeworK').value;
+	hworK = parseFloat(hworK);
+
+	Xam = document.getElementById('eXam').value;
+	Xam = parseFloat(Xam);
+
+	xAm = document.getElementById('exAm').value;
+	xAm = parseFloat(xAm);
+
+	document.getElementById('finalGrade').value = (hWork + hwOrk + hwoRk + hworK + Xam + xAm) / 300 * 100;
+	
+    }
+  </script>
+</head>
+
+
+
+<body>
+  <!--Roger Croft ====== CS 1030 ====== March 23, 2009 ======= HW11a-->
+
+  <h2>Enter the Following Scores:</h2>
+
+  	<p>Homework 1: <input type="text" value="15" id="homeWork" /></p>
+  	<p>Homework 2: <input type="text" value="19" id="homewOrk" /></p>
+  	<p>Homework 3: <input type="text" value="20" id="homewoRk" /></p>
+  	<p>Homework 4: <input type="text" value="23" id="homeworK" /></p>
+  	<p>Exam 1: <input type="text" value="75" id="eXam" /></p>
+  	<p>Exam 2: <input type="text" value="89" id="exAm" /></p>
+
+  <p>
+
+  <input type="button" value="Calculate Your Grade"
+	onclick="yourGrades();" />
+		
+  </p>
+  
+  <p>Overall Percentage: <input type="text" value="75" id="finalGrade" /></p>  
+
+</body>
+
+</html>
