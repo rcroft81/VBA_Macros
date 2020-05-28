@@ -1,0 +1,108 @@
+Sub Istation_Report()
+'-------Roger L. Croft---------------------------------------------------------
+'------------------------------------------------------------------------------
+'------------------------------------------------------------------------------
+'This macro is used to run the setup for the student file to help make it ready
+'for uploading to Istation.----------------------------------------------------
+'------------------------------------------------------------------------------
+    
+    '---Turn off delete alerts-------------------------------------------------
+    Application.ScreenUpdating = False ' Turn off delete alerts
+    Application.DisplayAlerts = False ' Turn off delete alerts
+    '--------------------------------------------------------------------------
+    
+    '---Marker Progress in Run Macro-------------------------------------------
+    Call Istation_Marker_In_Progress
+    
+    '---Create a copy of Istation names "Istation (2)"-------------------------
+    Sheets("Istation").Select
+    Sheets("Istation").Copy After:=Sheets(12)
+    Sheets("Istation (2)").Name = "Istation_Ready"
+    
+    '---Set up for vlookups and processing-------------------------------------
+    Windows("Run Macro.xlsm").Activate
+    Sheets("6th Grade Teachers").Select
+    Sheets("6th Grade Teachers").Copy After:=Sheets(12)
+    'New Sheet will be created and automatically named "6th Grade Teachers (2)"
+    Windows("Run Macro.xlsm").Activate
+    Sheets("Faculty Emails").Select
+    Sheets("Faculty Emails").Copy After:=Sheets(12)
+    'New sheet will be created and automatically name "Faculty Emails (2)"
+      
+    '---Set List Names for 6th Grade Teachers----------------------------------
+    Sheets("6th Grade Teachers (2)").Select
+    Range("A1:A7").Select
+    ActiveWorkbook.Names.Add Name:="Red", RefersToR1C1:="='6th Grade Teachers'!R1C1:R7C1"
+    Range("A8:A11").Select
+    ActiveWorkbook.Names.Add Name:="Green", RefersToR1C1:="='6th Grade Teachers'!R8C1:R11C1"
+    
+    '---Conditional formating--------------------------------------------------
+    Sheets("Istation_Ready").Select
+    Columns("S:AG").Select
+    Selection.FormatConditions.Add Type:=xlExpression, Formula1:= _
+        "=SUM(COUNTIF(S1,""*""&Red&""*""))"
+    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .Color = 255
+        .TintAndShade = 0
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
+    Selection.FormatConditions.Add Type:=xlExpression, Formula1:= _
+        "=SUM(COUNTIF(S1,""*""&Green&""*""))"
+    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .Color = 5287936
+        .TintAndShade = 0
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
+    
+    '---Filter and delete all grades except 0-6--------------------------------
+    Range("H1").Select
+    Selection.AutoFilter
+    ActiveSheet.Range("A:AG").AutoFilter Field:=8, Criteria1:=Array( _
+        "-1", "10", "11", "12", "-2", "7", "8", "9"), Operator:=xlFilterValues
+    Rows("2:2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Delete Shift:=xlUp
+
+    '---Filter and change all 0 to K-------------------------------------------
+    Columns("H:H").Select
+    ActiveSheet.Range("A:AG").AutoFilter Field:=8, Criteria1:="0"
+    Selection.Replace What:="0", Replacement:="K", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    Selection.AutoFilter
+   
+    '---Copy whole worksheet and paste it over itself to get rid of formulas---
+    Sheets("Istation_Ready").UsedRange.Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+    '---Trim All Columns-------------------------------------------------------
+    Call Istation_TrimCol
+    
+    '---Save the file----------------------------------------------------------
+    ActiveWorkbook.Save
+  
+    '---Delete (2) sheets------------------------------------------------------
+    Call Delete_IstationSheets1
+    Call Delete_IstationSheets2
+    
+    '---Turn on delete alerts--------------------------------------------------
+    Application.ScreenUpdating = True ' Turn on delete alerts
+    Application.DisplayAlerts = True ' Turn on delete alerts
+    
+    Windows("Run Macro.xlsm").Activate
+    
+    Call Istation_Marker_Complete
+    
+    Windows("Run Macro.xlsm").Activate
+    Sheets("Run Macros").Select
+'-------------------------------------------------------------------------
+'-------------------------------------------------------------------------
+'
+
+End Sub
