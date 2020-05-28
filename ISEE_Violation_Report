@@ -1,0 +1,24 @@
+Sub Violation_Report_Setup()
+'
+' This adjusts the Violation Report into a
+' friendlier format and saves it as an xlsx file
+'
+'
+    Rows("1:10").Select
+    Selection.Delete Shift:=xlUp
+    Cells.Select
+    Selection.ColumnWidth = 13.29
+    Columns("B:B").Select
+    Selection.ColumnWidth = 19.43
+    Sheets("Submission-Level Violations").Select
+    Application.DisplayAlerts = False
+    ActiveWindow.SelectedSheets.Delete
+    Application.DisplayAlerts = True
+    Range("A1").Select
+    ActiveWorkbook.SaveAs Filename:="C:\Users\rcroft\Downloads\ViolationsSummary_Updated.xlsx", FileFormat:= _
+        xlOpenXMLWorkbook, CreateBackup:=False
+    ActiveWorkbook.Close
+    Application.Workbooks.Open Filename:="C:\Users\rcroft\Downloads\ViolationsSummary_Updated.xlsx"
+    Kill "C:\Users\rcroft\Downloads\ViolationsSummary.xls"
+
+End Sub
