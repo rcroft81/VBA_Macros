@@ -1,0 +1,111 @@
+Sub TIDE_Report()
+'-------Roger L. Croft---------------------------------------------------------
+'------------------------------------------------------------------------------
+'------------------------------------------------------------------------------
+'This macro is used to run the setup for the student file to help make it------
+'ready for uploading to Tide.--------------------------------------------------
+'------------------------------------------------------------------------------
+
+    '---Turn off delete alerts-------------------------------------------------
+    Application.ScreenUpdating = False ' Turn off delete alerts
+    Application.DisplayAlerts = False ' Turn off delete alerts
+    '--------------------------------------------------------------------------
+        
+    '---Marker Progress in Run Macro-------------------------------------------
+    Call TIDE_Marker_In_Progress
+
+    '---Create a copy of TIDE named "TIDE (2)"---------------------------------
+    Sheets("TIDE").Select
+    Sheets("TIDE").Copy After:=Sheets(12)
+    
+    Sheets("TIDE-MasterCopy").Select
+    Rows("1:1").Select
+    Selection.Copy
+    Sheets("TIDE (2)").Select
+    Rows("1:1").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    
+    '---Alt Assessment vlookup-------------------------------------------------
+    Range("R2").Select
+    Application.CutCopyMode = False
+    ActiveCell.FormulaR1C1 = _
+        "=VLOOKUP(RC[-11],'TIDE-MasterCopy'!C[-11]:C,12,FALSE)"
+    Range("R2").Select
+    Selection.AutoFill Destination:=Range("R2:R" & Range("A" & Rows.Count).End(xlUp).Row)
+    Range("R2:R5595").Select
+         
+    '---Disability vlookup-----------------------------------------------------
+    Range("S2").Select
+    ActiveCell.FormulaR1C1 = _
+        "=VLOOKUP(RC[-12],'TIDE-MasterCopy'!C[-12]:C,13,FALSE)"
+    Range("S2").Select
+    Selection.AutoFill Destination:=Range("S2:S" & Range("A" & Rows.Count).End(xlUp).Row)
+    Range("S2:S5595").Select
+      
+    '---Migrant vlookup--------------------------------------------------------
+    Range("V2").Select
+    ActiveCell.FormulaR1C1 = _
+        "=VLOOKUP(RC[-15],'TIDE-MasterCopy'!C[-15]:C,16,FALSE)"
+    Range("V2").Select
+    Selection.AutoFill Destination:=Range("V2:V" & Range("A" & Rows.Count).End(xlUp).Row)
+    Range("V2:V5595").Select
+
+    '---PaperTester vlookup----------------------------------------------------
+    Range("W2").Select
+    ActiveCell.FormulaR1C1 = _
+        "=VLOOKUP(RC[-16],'TIDE-MasterCopy'!C[-16]:C,17,FALSE)"
+    Range("W2").Select
+    Selection.AutoFill Destination:=Range("W2:W" & Range("A" & Rows.Count).End(xlUp).Row)
+    Range("W2:W5595").Select
+    
+    '---Copy whole worksheet and paste it over itself to get rid of formulas---
+    Sheets("TIDE (2)").UsedRange.Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+            
+    '---Open a new workbook and save it to downloads---------------------------
+    Windows("Run Macro.xlsm").Activate
+    Sheets("TIDE (2)").Name = "TIDE_Ready"
+    
+    '---Check for missing data "#N/A" and highlight the cell-------------------
+    Sheets("TIDE_Ready").Select
+    Columns("R:R").Select
+    Selection.Replace What:="#N/A", Replacement:="No", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=True, FormulaVersion:=xlReplaceFormula2
+    Columns("S:S").Select
+    Selection.Replace What:="#N/A", Replacement:="N/A", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=True, FormulaVersion:=xlReplaceFormula2
+    Columns("V:V").Select
+    Selection.Replace What:="#N/A", Replacement:="No", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=True, FormulaVersion:=xlReplaceFormula2
+    Columns("W:W").Select
+    Selection.Replace What:="#N/A", Replacement:="N", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=True, FormulaVersion:=xlReplaceFormula2
+       
+    Windows("Run Macro.xlsm").Activate
+    ActiveWorkbook.Save
+
+
+    '---Run complete marker macro----------------------------------------------
+    Call TIDE_Marker_Complete
+
+    Windows("Run Macro.xlsm").Activate
+    Sheets("Run Macros").Select
+       
+    '---Turn on delete alerts--------------------------------------------------
+    Application.ScreenUpdating = True ' Turn on delete alerts
+    Application.DisplayAlerts = True ' Turn on delete alerts
+
+    '---Message Box---Macro Completed and File ready to be updated-------------
+    'Dim Answer2 As VbMsgBoxResult
+    'Answer2 = MsgBox("The Macro is complete. File now ready to be updated.", vbOKOnly, "Macro Complete")
+
+
+'------------------------------------------------------------------------------
+End Sub
