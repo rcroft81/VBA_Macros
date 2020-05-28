@@ -1,0 +1,93 @@
+Sub Staff_Assign_Setup()
+'
+' This pulls the information from x:\assignments
+' file and adds it to the bootom of the StaffAssignments
+' file (which is in the downloads folder).
+'
+    Application.ScreenUpdating = False ' Turn off delete alerts
+    Application.DisplayAlerts = False ' Turn off delete alerts
+'-------------------------------------------------------------------------
+    ChDir "C:\Users\rcroft\Downloads"
+    ActiveWorkbook.SaveAs Filename:= _
+        "C:\Users\rcroft\Downloads\StaffAssignments.csv", FileFormat:=xlCSV, _
+        CreateBackup:=False
+    ChDir "X:\"
+    Workbooks.Open Filename:="X:\assignments.csv"
+    Sheets("assignments").Select
+    Sheets("assignments").Copy After:=Workbooks("StaffAssignments.csv").Sheets(1)
+    Windows("assignments.csv").Activate
+    ActiveWorkbook.Close
+
+    Rows("2:2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+
+    Sheets("StaffAssignments").Select
+    Selection.End(xlDown).Select
+    Range("A1").End(xlDown).Offset(1, 0).Select
+    ActiveSheet.Paste
+    Sheets("assignments").Select
+    Application.CutCopyMode = False
+    ActiveWindow.SelectedSheets.Delete
+    Sheets.Add After:=ActiveSheet
+    Sheets("Sheet2").Select
+    Sheets("Sheet2").Name = "Sheet1"
+    Sheets("StaffAssignments").Select
+
+'-------------------------------------------------------------------------
+'-------------------------------------------------------------------------
+' This next section will set up vlookup, add a new
+' sheet and rename it to Sheet1, and then toggle
+' on the filters if they are off.
+'-------------------------------------------------------------------------
+'-------------------------------------------------------------------------
+'    Sheets.Add After:=ActiveSheet
+'    Sheets("Sheet1").Select
+'    Sheets("Sheet1").Name = "Sheet1"
+'    Sheets("StaffAssignments").Select
+'    range("P2").Select
+'    ActiveCell.FormulaR1C1 = "=VLOOKUP(RC[-15],Sheet1!C[-15],1,FALSE)"
+'    range("P2").Select
+'
+'    Selection.AutoFill Destination:=range("P2:P" & range("A" & Rows.Count).End(xlUp).Row)
+'    range(Selection, Selection.End(xlDown)).Select
+'
+'    Application.Goto ActiveSheet.range("A1"), True
+'
+'    Sheets("Sheet3").Delete
+'-------------------------------------------------------------------------
+'-------------------------------------------------------------------------
+'-------------------------------------------------------------------------
+    Application.ScreenUpdating = True ' Turn on delete alerts
+    Application.DisplayAlerts = True ' Turn on delete alerts
+
+    Selection.AutoFilter
+
+
+
+
+'-------------------------------------------------------------------------
+'-------------------------------------------------------------------------
+'Staff_Assign_Setup_UNDO()
+'-------------------------------------------------------------------------
+'This will disable alerts, unhide columns, delete sheet1, turn off the filters, and then turn alerts back on.
+'-------------------------------------------------------------------------
+
+'-------------------------------------------------------------------------
+
+    Application.DisplayAlerts = False 'will turn off the popup warnings
+
+    Sheets("Sheet1").Select
+    ActiveWindow.SelectedSheets.Delete
+    Columns("P:P").Select
+    Selection.Delete Shift:=xlToLeft
+    Selection.AutoFilter
+    Cells.Select
+    Selection.EntireColumn.Hidden = False
+
+    Application.DisplayAlerts = True 'will turn them back on
+
+    Application.GoTo ActiveSheet.Range("A1"), True
+
+
+End Sub
