@@ -1,0 +1,136 @@
+Sub TC_Think_Central()
+'------------------------------------------------------------------------------
+'---Roger L. Croft-------------------------------------------------------------
+'------------------------------------------------------------------------------
+'---Set up the quick report generated from PowerSchool to be ready-------------
+'---to combine into the upload file for Think Central--------------------------
+'------------------------------------------------------------------------------
+    
+    Call TC_Marker_In_Progress
+    
+    '---Turn off delete alerts-------------------------------------------------
+    Application.ScreenUpdating = False ' Turn off delete alerts
+    Application.DisplayAlerts = False ' Turn off delete alerts
+    '--------------------------------------------------------------------------
+
+    '---Set up Sheet in Run Macro for megring to users-------------------------
+    Windows("Run Macro.xlsm").Activate
+    Sheets("Think Central").Select
+    Sheets("Think Central").Copy After:=Sheets(12)
+    Sheets("Think Central (2)").Name = "Think_Central_Processing"
+        
+    '---Open Ps and TC School ID Codes and copy it into workbook---------------
+    'Sheets("PS and TC School ID Codes").Select
+    'Sheets("PS and TC School ID Codes").Copy After:=Sheets(12)
+        'New Sheet will be created and automatically named "PS and TC School ID Codes (2)"
+    Sheets("users").Select
+    Sheets("users").Copy After:=Sheets(12)
+        'New Sheet will be created and automatically named "users (2)"
+    
+    '---Fill Column A with "2020"----------------------------------------------
+    Sheets("Think_Central_Processing").Select
+    Columns("A:A").Select
+    ActiveSheet.Range("A:O").AutoFilter Field:=1, Criteria1:=""
+    Selection.Replace What:="", Replacement:="2020", LookAt:=xlPart, _
+    SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+    ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    
+    '---Fill Column B with "s"-------------------------------------------------
+    Columns("B:B").Select
+    ActiveSheet.Range("A:O").AutoFilter Field:=2, Criteria1:=""
+    Selection.Replace What:="", Replacement:="s", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    
+    '---Fill Column K with "MDR"-----------------------------------------------
+    Columns("K:K").Select
+    ActiveSheet.Range("A:O").AutoFilter Field:=11, Criteria1:=""
+    Selection.Replace What:="", Replacement:="MDR", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+
+    '---Fill Column N with "TC"------------------------------------------------
+    Columns("N:N").Select
+    ActiveSheet.Range("A:O").AutoFilter Field:=14, Criteria1:=""
+    Selection.Replace What:="", Replacement:="TC", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    ActiveSheet.ShowAllData
+    
+    '---Filter and change all 0 to K-------------------------------------------
+    Columns("H:H").Select
+    ActiveSheet.Range("A:O").AutoFilter Field:=8, Criteria1:="0"
+    Selection.Replace What:="0", Replacement:="K", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False, FormulaVersion:=xlReplaceFormula2
+    ActiveSheet.ShowAllData
+            
+    '---Filter and delete all grades except 0-5--------------------------------
+    Range("A1").Select
+    Selection.AutoFilter
+    ActiveSheet.Range("A:O").AutoFilter Field:=8, Criteria1:=Array( _
+        "-1", "10", "11", "12", "-2", "6", "7", "8", "9"), Operator:=xlFilterValues
+    Rows("2:2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Delete Shift:=xlUp
+    ActiveSheet.ShowAllData
+    Selection.AutoFilter
+    
+    '---Fill Column O with Vlookup formula-------------------------------------
+    Range("O1").Select
+    ActiveCell.FormulaR1C1 = "SchoolID"
+          
+    Range("O2").Select
+    Range("O2:O" & Cells(Rows.Count, "L").End(xlUp).Row).Formula = "=VLOOKUP(RC[-3],'PS and TC School ID Codes'!C[-14]:C[-12],3,FALSE)"
+    Columns("O:O").Select
+    Selection.Copy
+    Columns("L:L").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("O:O").Select
+    Application.CutCopyMode = False
+    Selection.Delete Shift:=xlToLeft
+          
+    Sheets("Think_Central_Processing").Select
+    Rows("2:2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Selection.Copy
+
+    Sheets("users (2)").Select
+    Selection.End(xlDown).Select
+    Range("A1").End(xlDown).Offset(1, 0).Select
+    ActiveSheet.Paste
+    
+    '---Delete Think Central & PS and TC School Codes Sheets-------------------
+    Sheets("Think_Central_Processing").Select
+    ActiveSheet.Delete
+    
+    '---Rename "Users (2)" to "Think Central_Ready"----------------------------
+    Sheets("users (2)").Name = "Think_Central_Ready"
+    
+    '---Save File in Downloads folder------------------------------------------
+    ActiveWorkbook.Save
+        
+    '---Return to Run Macro and update Marker----------------------------------
+    Windows("Run Macro.xlsm").Activate
+    Sheets("Run Macros").Select
+    
+    '---Update marker and log an entry into logbook----------------------------
+    Call TC_Marker_Complete
+
+    '---Change color of the "Think_Central_Ready" tab--------------------------
+    Sheets("Think_Central_Ready").Select
+    With ActiveWorkbook.Sheets("Think_Central_Ready").Tab
+        .Color = 5287936
+        .TintAndShade = 0
+    End With
+
+    '---Return to Run Macro sheet----------------------------------------------
+    Sheets("Run Macros").Select
+    
+    '---Turn on delete alerts--------------------------------------------------
+    Application.ScreenUpdating = True ' Turn on delete alerts
+    Application.DisplayAlerts = True ' Turn on delete alerts
+
+'-------------------------------------------------------------------------------
+End Sub
