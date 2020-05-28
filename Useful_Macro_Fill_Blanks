@@ -1,0 +1,19 @@
+Sub zzz_Fill_Selected_Blank_Cells_Zero()
+    Dim r As Range
+    Set r = Selection
+    x = FillEmptyCellWith0(r)
+    MsgBox x
+End Sub
+
+Public Function FillEmptyCellWith0(r As Range) As String
+    Dim re As Range
+    On Error Resume Next
+        Set re = r.Cells.SpecialCells(xlCellTypeBlanks)
+    On Error GoTo 0
+    If re Is Nothing Then
+        FillEmptyCellWith0 = "Nothng changed"
+        Exit Function
+    End If
+    re.Value = 0
+    FillEmptyCellWith0 = "done"
+End Function
