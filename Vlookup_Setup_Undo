@@ -1,0 +1,21 @@
+Sub Vlookup_Setup_UNDO()
+'
+' This will disable alerts, unhide columns, delete sheet1, turn off the filters, and then turn alerts back on.
+'
+    Application.DisplayAlerts = False 'will turn off the popup warnings
+
+    Sheets("Sheet1").Select
+    ActiveWindow.SelectedSheets.Delete
+    Columns("A:A").Select
+    Selection.Delete Shift:=xlToLeft
+    Selection.AutoFilter
+    Cells.Select
+    Selection.EntireColumn.Hidden = False
+
+    Application.DisplayAlerts = True 'will turn them back on
+
+    Application.GoTo ActiveSheet.Range("A1"), True
+'
+'
+'
+End Sub
