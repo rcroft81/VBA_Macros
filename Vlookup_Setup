@@ -1,0 +1,24 @@
+Sub Vlookup_Setup()
+'
+' This macro will set up vlookup, add a new sheet and rename it to Sheet1,
+' and then toggle on the filters if they are off.
+'
+    Sheets.Add After:=ActiveSheet
+    Sheets(1).Select
+    Columns("A:A").Select
+    Selection.Insert Shift:=xlToRight, CopyOrigin:=xlFormatFromLeftOrAbove
+    Range("A1").Select
+    ActiveCell.FormulaR1C1 = VLookup
+    Range("A2").Select
+    ActiveCell.FormulaR1C1 = "=VLOOKUP(RC[1],sheet1!C,1,FALSE)"
+    Selection.AutoFill Destination:=Range("A2:A" & Range("B" & Rows.Count).End(xlUp).Row)
+    Range(Selection, Selection.End(xlDown)).Select
+
+    Application.GoTo ActiveSheet.Range("A1"), True
+'
+' This is section is used to turn filters on if they are off
+'
+    Selection.AutoFilter
+
+
+End Sub
