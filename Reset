@@ -1,0 +1,97 @@
+Sub Reset_Start_Over()
+'------------------------------------------------------------------------------
+'---Roger L. Croft-------------------------------------------------------------
+'---Reset and start over macro-------------------------------------------------
+'------------------------------------------------------------------------------
+
+    Dim Answer As VbMsgBoxResult
+
+    Answer = MsgBox("Are you sure you want to RESET?                                                                                                                                                                                         ***NOTE: This WILL ONLY DELETE any generated sheets completed by the macros (i.e. TIDE_Ready, Istation_Ready, Think_Central_Ready).", vbYesNo + vbQestion, "Restart/Reset")
+    '---The above line has more words to it-------------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    If Answer = vbYes Then
+    '--------------------------------------------------------------------------
+        Range("B2,B4,B6,B8").Select
+        ActiveWindow.SmallScroll Down:=-21
+        With Selection.Interior
+            .Pattern = xlNone
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+        With Selection
+            .HorizontalAlignment = xlGeneral
+            .VerticalAlignment = xlCenter
+            .WrapText = False
+            .Orientation = 0
+            .AddIndent = False
+            .IndentLevel = 0
+            .ShrinkToFit = False
+            .ReadingOrder = xlContext
+            .MergeCells = False
+        End With
+        Selection.UnMerge
+        Selection.ClearContents
+    
+    '---Delete users from downloads folder-------------------------------------
+    '    Dim myFilePath As String
+    '    Dim myFilePath2 As String
+    '    Dim myFilePath3 As String
+    '
+    '    myFilePath = "C:\Users\rcroft\Downloads\users.csv"
+    '    myFilePath2 = "C:\Users\rcroft\Downloads\Istation.csv"
+    '    myFilePath3 = "C:\Users\rcroft\Downloads\TIDE.csv"
+    '
+    '    If Dir(myFilePath) <> "" Then
+    '        Kill myFilePath
+    '    End If
+    '
+    '    If Dir(myFilePath2) <> "" Then
+    '        Kill myFilePath2
+    '    End If
+    '
+    '    If Dir(myFilePath3) <> "" Then
+    '        Kill myFilePath3
+    '    End If
+    '
+    '---Delete tabs in Run Macro worksheet-------------------------------------
+    Call Delete_TIDE_Ready
+    Call Delete_Istation_Ready
+    Call Delete_Think_Central_Ready
+        
+    '---Log an entry into the log book that this macro was run-----------------
+    Sheets("Logbook").Select
+    
+    '---Enter log entry into sheet
+    Range("A1").End(xlDown).Offset(1, 0).Select
+    ActiveCell.FormulaR1C1 = "=NOW()"
+    Range("A1").End(xlDown).Offset(1, 0).Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Range("B1").End(xlDown).Offset(1, 0).Select
+    Application.CutCopyMode = False
+    ActiveCell.FormulaR1C1 = "Reset / Start Over"
+    Range("C1").End(xlDown).Offset(1, 0).Select
+    ActiveCell.FormulaR1C1 = "Process Completed"
+     
+    Columns("A:A").Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+    
+    '---Return to Run Macro sheet----------------------------------------------
+    Sheets("Run Macros").Select
+    Range("A1").Activate
+    Range("B2,B4,B6,B8").Select
+    Range("B8").Activate
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+
+    End If
+
+'-------------------------------------------------------------------------------
+End Sub
