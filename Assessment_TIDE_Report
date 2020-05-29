@@ -1,15 +1,10 @@
 Sub TIDE_Report()
-'-------Roger L. Croft---------------------------------------------------------
-'------------------------------------------------------------------------------
-'------------------------------------------------------------------------------
 'This macro is used to run the setup for the student file to help make it------
 'ready for uploading to Tide.--------------------------------------------------
-'------------------------------------------------------------------------------
 
     '---Turn off delete alerts-------------------------------------------------
     Application.ScreenUpdating = False ' Turn off delete alerts
     Application.DisplayAlerts = False ' Turn off delete alerts
-    '--------------------------------------------------------------------------
         
     '---Marker Progress in Run Macro-------------------------------------------
     Call TIDE_Marker_In_Progress
@@ -91,7 +86,6 @@ Sub TIDE_Report()
     Windows("Run Macro.xlsm").Activate
     ActiveWorkbook.Save
 
-
     '---Run complete marker macro----------------------------------------------
     Call TIDE_Marker_Complete
 
@@ -106,6 +100,4 @@ Sub TIDE_Report()
     'Dim Answer2 As VbMsgBoxResult
     'Answer2 = MsgBox("The Macro is complete. File now ready to be updated.", vbOKOnly, "Macro Complete")
 
-
-'------------------------------------------------------------------------------
 End Sub
