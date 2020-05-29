@@ -1,8 +1,7 @@
 Sub Vlookup_Setup()
-'
-' This macro will set up vlookup, add a new sheet and rename it to Sheet1,
-' and then toggle on the filters if they are off.
-'
+'---This macro will set up vlookup, add a new sheet and rename it to Sheet1,
+'---and then toggle on the filters if they are off.
+
     Sheets.Add After:=ActiveSheet
     Sheets(1).Select
     Columns("A:A").Select
@@ -15,10 +14,8 @@ Sub Vlookup_Setup()
     Range(Selection, Selection.End(xlDown)).Select
 
     Application.GoTo ActiveSheet.Range("A1"), True
-'
-' This is section is used to turn filters on if they are off
-'
-    Selection.AutoFilter
 
+    '---This is section is used to turn filters on if they are off
+    Selection.AutoFilter
 
 End Sub
