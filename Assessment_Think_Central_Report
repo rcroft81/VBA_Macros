@@ -1,17 +1,12 @@
 Sub TC_Think_Central()
-'------------------------------------------------------------------------------
-'---Roger L. Croft-------------------------------------------------------------
-'------------------------------------------------------------------------------
 '---Set up the quick report generated from PowerSchool to be ready-------------
 '---to combine into the upload file for Think Central--------------------------
-'------------------------------------------------------------------------------
     
     Call TC_Marker_In_Progress
     
     '---Turn off delete alerts-------------------------------------------------
     Application.ScreenUpdating = False ' Turn off delete alerts
     Application.DisplayAlerts = False ' Turn off delete alerts
-    '--------------------------------------------------------------------------
 
     '---Set up Sheet in Run Macro for megring to users-------------------------
     Windows("Run Macro.xlsm").Activate
