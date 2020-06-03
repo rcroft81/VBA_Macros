@@ -1,19 +1,19 @@
-Sub TIDE_Marker_In_Progress()
-'---TIDE macro in progress
+Sub TIDE_Marker_Complete()
+'---TIDE Macro Complete
 
     Windows("Run Macro.xlsm").Activate
     Sheets("Run Macros").Select
-
+    
     Range("B6").Select
     With Selection.Interior
         .Pattern = xlSolid
         .PatternColorIndex = xlAutomatic
-        .Color = 49407
+        .Color = 5287936
         .TintAndShade = 0
         .PatternTintAndShade = 0
     End With
-    ActiveCell.FormulaR1C1 = "In Progress"
-
+    ActiveCell.FormulaR1C1 = "Complete"
+   
     Range("B6").Select
     With Selection
         .HorizontalAlignment = xlCenter
@@ -28,4 +28,27 @@ Sub TIDE_Marker_In_Progress()
     End With
     Selection.Merge
 
+    '---Log an entry into the log book that this macro was run-----------------
+    Sheets("Logbook").Select
+    
+    '---Enter log entry into sheet
+    Range("A1").End(xlDown).Offset(1, 0).Select
+    ActiveCell.FormulaR1C1 = "=NOW()"
+    Range("A1").End(xlDown).Offset(1, 0).Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Range("B1").End(xlDown).Offset(1, 0).Select
+    Application.CutCopyMode = False
+    ActiveCell.FormulaR1C1 = "TIDE"
+    Range("C1").End(xlDown).Offset(1, 0).Select
+    ActiveCell.FormulaR1C1 = "Process Completed"
+    
+    Columns("A:A").Select
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+    Windows("Run Macro.xlsm").Activate
+    
 End Sub
